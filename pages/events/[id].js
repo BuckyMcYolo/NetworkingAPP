@@ -1,14 +1,15 @@
-import { Fragment } from "react";
-import EventContent from "../../components/eventComponents/event-detail/event-content";
-import EventLogistics from "../../components/eventComponents/event-detail/event-logistics";
-import EventSummary from "../../components/eventComponents/event-detail/event-summary";
-import { getFeaturedEvents } from "../../helpers/api-utils";
-import { getEventById } from "../../helpers/api-utils";
-import Head from "next/head";
+import { Fragment } from "react"
+import EventContent from "../../components/eventComponents/event-detail/event-content"
+import EventLogistics from "../../components/eventComponents/event-detail/event-logistics"
+import EventSummary from "../../components/eventComponents/event-detail/event-summary"
+import { getFeaturedEvents } from "../../helpers/api-utils"
+import { getEventById } from "../../helpers/api-utils"
+import Head from "next/head"
+import Comments from "../../components/eventComponents/input/comments"
 
 const EventsForUser = ({ event }) => {
   if (!event) {
-    return <p>No event found!</p>;
+    return <p>No event found!</p>
   }
 
   return (
@@ -33,31 +34,32 @@ const EventsForUser = ({ event }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
+      <Comments eventId={event._id} />
     </Fragment>
-  );
-};
+  )
+}
 
-export default EventsForUser;
+export default EventsForUser
 
 export async function getStaticProps(context) {
-  const eventId = context.params.id;
-  const event = await getEventById(eventId);
+  const eventId = context.params.id
+  const event = await getEventById(eventId)
 
   return {
     props: {
       event: event,
     },
     revalidate: 30,
-  };
+  }
 }
 
 //We need a getStaticPaths here bc [id] is a dynamic route
 export async function getStaticPaths() {
-  const events = await getFeaturedEvents();
-  const paths = events.map((event) => ({ params: { id: event.id } }));
+  const events = await getFeaturedEvents()
+  const paths = events.map((event) => ({ params: { id: event.id } }))
 
   return {
     paths: paths,
     fallback: "blocking",
-  };
+  }
 }

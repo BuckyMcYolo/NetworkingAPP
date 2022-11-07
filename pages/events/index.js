@@ -1,15 +1,16 @@
-import { getAllEvents } from "../../helpers/api-utils";
-import EventList from "../../components/eventComponents/event-list";
-import EventsSearch from "../../components/eventComponents/events-search";
-import { useRouter } from "next/router";
-import Head from "next/head";
+import { getAllEvents } from "../../helpers/api-utils"
+import EventList from "../../components/eventComponents/event-list"
+import EventsSearch from "../../components/eventComponents/events-search"
+import { useRouter } from "next/router"
+import Head from "next/head"
+import NewsletterRegistration from "../../components/eventComponents/input/newsletter-registration"
 
 const Events = ({ events }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   function findEventsHandler(year, month) {
-    const fullPath = `/events/${year}/${month}`;
-    router.push(fullPath);
+    const fullPath = `/events/${year}/${month}`
+    router.push(fullPath)
   }
 
   return (
@@ -23,6 +24,7 @@ const Events = ({ events }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="keywords" content="networking, meet people, find friends" />
       </Head>
+      <NewsletterRegistration />
       <EventsSearch onSearch={findEventsHandler} />
       <h1
         style={{
@@ -35,18 +37,18 @@ const Events = ({ events }) => {
       </h1>
       <EventList items={events} />
     </div>
-  );
-};
+  )
+}
 
-export default Events;
+export default Events
 
 export async function getStaticProps() {
-  const allEvents = await getAllEvents();
+  const events = await getAllEvents()
   return {
     props: {
-      events: allEvents,
+      events: events,
     },
     revalidate: 60,
-  };
+  }
 }
 //We dont need a getStaticPaths here bc we are not using a dynamic route
