@@ -1,12 +1,9 @@
-import Link from "next/link";
-import { getAllEvents } from "../../dummy-data";
+import { getAllEvents } from "../../helpers/api-utils";
 import EventList from "../../components/eventComponents/event-list";
 import EventsSearch from "../../components/eventComponents/events-search";
-import { getFilteredEvents } from "../../dummy-data";
 import { useRouter } from "next/router";
 
-const Events = () => {
-  const events = getAllEvents();
+const Events = ({ events }) => {
   const router = useRouter();
 
   function findEventsHandler(year, month) {
@@ -32,3 +29,14 @@ const Events = () => {
 };
 
 export default Events;
+
+export async function getStaticProps() {
+  const allEvents = await getAllEvents();
+  return {
+    props: {
+      events: allEvents,
+    },
+    revalidate: 60,
+  };
+}
+//We dont need a getStaticPaths here bc we are not using a dynamic route

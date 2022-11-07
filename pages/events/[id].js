@@ -1,20 +1,13 @@
-import { useRouter } from "next/router";
 import { Fragment } from "react";
 import EventContent from "../../components/eventComponents/event-detail/event-content";
 import EventLogistics from "../../components/eventComponents/event-detail/event-logistics";
 import EventSummary from "../../components/eventComponents/event-detail/event-summary";
+import { getFeaturedEvents } from "../../helpers/api-utils";
+import { getEventById } from "../../helpers/api-utils";
 
-import { getEventById } from "../../dummy-data";
-
-const EventsForUser = () => {
-  const router = useRouter();
-  console.log(router.query);
-
-  const eventId = router.query.id;
-  const event = getEventById(eventId);
-
-  if (!eventId) {
-    return <p>No event Found</p>;
+const EventsForUser = ({ event }) => {
+  if (!event) {
+    return <p>No event found!</p>;
   }
 
   return (
@@ -35,3 +28,26 @@ const EventsForUser = () => {
 };
 
 export default EventsForUser;
+
+export async function getStaticProps(context) {
+  const eventId = context.params.id;
+  const event = await getEventById(eventId);
+
+  return {
+    props: {
+      event: event,
+    },
+    revalidate: 30,
+  };
+}
+
+//We need a getStaticPaths here bc [id] is a dynamic route
+export async function getStaticPaths() {
+  const events = await getFeaturedEvents();
+  const paths = events.map((event) => ({ params: { id: event.id } }));
+
+  return {
+    paths: paths,
+    fallback: "blocking",
+  };
+}
