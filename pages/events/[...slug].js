@@ -2,11 +2,25 @@ import EventList from "../../components/eventComponents/event-list";
 import ResultsTitle from "../../components/eventComponents/results-title";
 import { getFilteredEvents } from "../../helpers/api-utils";
 import Button from "../../ui/button";
+import Head from "next/head";
 
 const FilteredEvents = (props) => {
+  const pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${props.date.month}/${props.date.year}`}
+      />
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="keywords" content="networking, meet people, find friends" />
+    </Head>
+  );
+
   if (props.hasError) {
     return (
       <div>
+        {pageHeadData}
         <h2 className="center">Invalid Filter. Please adjust your values!</h2>;
         <div className="center">
           {" "}
@@ -19,6 +33,7 @@ const FilteredEvents = (props) => {
   if (props.events.length === 0 || !props.events) {
     return (
       <div>
+        {pageHeadData}
         <h2 className="center">No events found</h2>;
         <div className="center">
           <Button link="/events">Show all events</Button>
@@ -30,6 +45,7 @@ const FilteredEvents = (props) => {
 
   return (
     <div>
+      {pageHeadData}
       <ResultsTitle date={date} />
       <EventList items={props.events} />
     </div>

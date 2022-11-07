@@ -4,6 +4,7 @@ import EventLogistics from "../../components/eventComponents/event-detail/event-
 import EventSummary from "../../components/eventComponents/event-detail/event-summary";
 import { getFeaturedEvents } from "../../helpers/api-utils";
 import { getEventById } from "../../helpers/api-utils";
+import Head from "next/head";
 
 const EventsForUser = ({ event }) => {
   if (!event) {
@@ -12,6 +13,15 @@ const EventsForUser = ({ event }) => {
 
   return (
     <Fragment>
+      <Head>
+        <title>{event.title}</title>
+        <meta
+          name="description"
+          content="Find a lot of networking events that allow you to meet interesting people"
+        />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="keywords" content="networking, meet people, find friends" />
+      </Head>
       <EventSummary title={event.title} />
 
       <EventLogistics

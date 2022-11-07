@@ -2,6 +2,7 @@ import { getAllEvents } from "../../helpers/api-utils";
 import EventList from "../../components/eventComponents/event-list";
 import EventsSearch from "../../components/eventComponents/events-search";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Events = ({ events }) => {
   const router = useRouter();
@@ -13,6 +14,15 @@ const Events = ({ events }) => {
 
   return (
     <div>
+      <Head>
+        <title>Events</title>
+        <meta
+          name="description"
+          content="Find a lot of networking events that allow you to meet interesting people"
+        />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="keywords" content="networking, meet people, find friends" />
+      </Head>
       <EventsSearch onSearch={findEventsHandler} />
       <h1
         style={{
