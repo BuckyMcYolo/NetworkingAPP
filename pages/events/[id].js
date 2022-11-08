@@ -34,7 +34,7 @@ const EventsForUser = ({ event }) => {
       <EventContent>
         <p>{event.description}</p>
       </EventContent>
-      <Comments eventId={event._id} />
+      <Comments eventId={event.id} />
     </Fragment>
   )
 }
